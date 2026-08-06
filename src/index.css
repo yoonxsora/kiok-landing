@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #fafaf8;
+  --color-panel: #ffffff;
+  --color-ink: #101312;
+  --color-soft: #666d68;
+  --color-faint: #a5aba6;
+  --color-line: #e1e3de;
+  --color-line-2: #cfd2cb;
+  --color-was: #a8503c;
+  --color-now: #25664a;
+
+  --font-sans: "Archivo", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+@layer base {
+  body {
+    @apply bg-bg text-ink font-sans antialiased;
+    font-size: 17px;
+    line-height: 1.6;
+  }
+  ::selection {
+    background: var(--color-ink);
+    color: var(--color-bg);
+  }
+}
+
+@utility label {
+  @apply font-mono text-[11.5px] tracking-[0.13em] uppercase text-faint;
+}
