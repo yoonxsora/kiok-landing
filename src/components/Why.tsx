@@ -14,7 +14,7 @@ export function Why() {
         was careless: the work spanned multiple days, stations, and researchers, and no system
         captured the whole picture.
       </p>
-      <div className="flex flex-wrap items-baseline gap-x-5 gap-y-3 border-t border-line pt-[18px]">
+      <div className="flex flex-wrap items-center gap-x-5 gap-y-3 border-t border-line pt-[18px]">
         <b className="text-[clamp(30px,4.4vw,44px)] leading-none font-bold tracking-[-0.04em]">
           $28B
         </b>
