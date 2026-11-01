@@ -1,22 +1,355 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Kiok — Automatic documentation for wet-lab experiments</title>
-    <meta
-      name="description"
-      content="Kiok records wet-lab experiments as they happen and produces a complete, traceable record."
-    />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap"
-      rel="stylesheet"
-    />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kiok · Authorization infrastructure for AI agents</title>
+  <meta name="description" content="Kiok checks every AI agent action against the person behind it and your company's policy, before it runs. Allowed, blocked or paused for approval, and logged against a real person.">
+  <meta name="theme-color" content="#FFFFFF">
+
+  <!-- Replace YOUR_DOMAIN with the production domain so share previews resolve. -->
+  <link rel="canonical" href="https://YOUR_DOMAIN/">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Kiok">
+  <meta property="og:title" content="Kiok · Every AI agent should act as the person who asked.">
+  <meta property="og:description" content="Authorization infrastructure for AI agents. Every agent action checked against the person behind it and your company's policy, before it runs.">
+  <meta property="og:url" content="https://YOUR_DOMAIN/">
+  <meta property="og:image" content="https://YOUR_DOMAIN/og.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="The kiok wordmark on a light background.">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon.png" type="image/png" sizes="32x32">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="nav">
+    <div class="container nav__inner">
+      <a class="nav__logo" href="#top" aria-label="Kiok home">
+        <img src="logo.svg" alt="" width="66" height="25">
+      </a>
+      <nav aria-label="Primary">
+        <ul class="nav__links">
+          <li><a href="#problem">The problem</a></li>
+          <li><a href="#how">How it works</a></li>
+          <li><a href="#teams">For teams</a></li>
+        </ul>
+      </nav>
+      <a class="btn btn--dark btn--sm" href="#access">Request early access</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero" id="top">
+      <div class="container hero__grid">
+        <div class="hero__copy">
+          <p class="eyebrow">Authorization infrastructure for AI agents</p>
+          <h1>Every AI agent should act as the person who asked.</h1>
+          <p class="lede">Kiok checks every agent action against the person behind it and your company’s policy, before it runs. Allowed, blocked or paused for approval, and logged against a real person.</p>
+          <div class="actions">
+            <a class="btn btn--dark" href="#access">Request early access</a>
+            <a class="btn btn--ghost" href="#how">See how it works</a>
+          </div>
+        </div>
+
+        <figure class="log" aria-labelledby="log-title">
+          <div class="log__head">
+            <h2 class="log__title" id="log-title">Agent activity</h2>
+            <span class="mono-label">Audit log</span>
+          </div>
+          <div class="log__scroll" role="region" aria-labelledby="log-title" tabindex="0">
+            <table class="log__table">
+              <thead>
+                <tr>
+                  <th scope="col">Who asked</th>
+                  <th scope="col">Agent tried</th>
+                  <th scope="col">Kiok decided</th>
+                  <th scope="col">CRM sees</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><span class="who">Marcus Lee</span><span class="role">Sales rep</span></td>
+                  <td>Give Emberly Foods 25% off</td>
+                  <td><span class="pill pill--blocked">Blocked</span><span class="reason">Not his deal · Personal permissions</span></td>
+                  <td><code class="key">svc-key</code></td>
+                </tr>
+                <tr>
+                  <td><span class="who">Marcus Lee</span><span class="role">Sales rep</span></td>
+                  <td>Copperline Logistics: $125,000 → $93,750 <span class="muted">(25% discount)</span></td>
+                  <td><span class="pill pill--paused">Paused</span><span class="reason">Sales policy · waiting for Sam Ortiz</span></td>
+                  <td><code class="key">svc-key</code></td>
+                </tr>
+                <tr>
+                  <td><span class="who">Priya Shah</span><span class="role">Sales rep</span></td>
+                  <td>Delete 50 stale contacts</td>
+                  <td><span class="pill pill--allowed">Allowed</span><span class="reason">Her contacts · Within policy</span></td>
+                  <td><code class="key">svc-key</code></td>
+                </tr>
+                <tr>
+                  <td><span class="who">Priya Shah</span><span class="role">Sales rep</span></td>
+                  <td>Send pricing to 12 Halden Supply contacts <span class="handoff">Research agent → Email agent</span></td>
+                  <td><span class="pill pill--allowed">Allowed</span><span class="reason">Her account · Traced through handoff</span></td>
+                  <td><code class="key">svc-key</code></td>
+                </tr>
+                <tr>
+                  <td><span class="who">Priya Shah</span><span class="role">Sales rep</span></td>
+                  <td>Delete 100 more contacts</td>
+                  <td><span class="pill pill--paused">Paused</span><span class="reason">Legal policy · 150 / 100 per hour, all agents</span></td>
+                  <td><code class="key">svc-key</code></td>
+                </tr>
+                <tr>
+                  <td><span class="who">Alex Rivera</span><span class="role">Customer support</span></td>
+                  <td>Move Juniper Learning to closed won</td>
+                  <td><span class="pill pill--blocked">Blocked</span><span class="reason">View only · Personal permissions</span></td>
+                  <td><code class="key">svc-key</code></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <figcaption class="log__foot">Kiok knows who really asked. The CRM sees the same key for everyone.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <!-- Stat band -->
+    <section class="band" aria-labelledby="band-title">
+      <div class="container">
+        <h2 class="visually-hidden" id="band-title">AI agents acting out of scope</h2>
+        <dl class="stats">
+          <div class="stat">
+            <dt class="stat__num">65%</dt>
+            <dd>of enterprises say an AI agent has acted outside its intended scope.</dd>
+          </div>
+          <div class="stat">
+            <dt class="stat__num">29%</dt>
+            <dd>of those saw real damage, from exposed data to financial loss.</dd>
+          </div>
+          <div class="stat">
+            <dt class="stat__num">34%</dt>
+            <dd>check whether an agent is allowed to act at the moment it acts.</dd>
+          </div>
+        </dl>
+        <p class="band__line">Companies are giving agents real actions. Most don’t check those actions before they run.</p>
+        <p class="band__source">Source: Cequence Security and Enterprise Management Associates (EMA), <cite>Agents Without Guardrails</cite>, 2026. Survey of 202 enterprise IT and security leaders.</p>
+      </div>
+    </section>
+
+    <!-- The problem -->
+    <section class="section" id="problem" aria-labelledby="problem-title">
+      <div class="container">
+        <p class="eyebrow">The problem</p>
+        <h2 class="section__title" id="problem-title">Agents don’t know who they’re acting for. Or what your company allows.</h2>
+        <p class="section__lede">Agents now update CRMs, email customers and change records. But permission systems were built for people, not agents.</p>
+        <div class="cards cards--4">
+          <article class="card">
+            <h3>Shared agents</h3>
+            <p>A company assistant or team bot runs on one broad service account. Anyone who can message it can reach everything it can, and the tool only ever sees the bot.</p>
+          </article>
+          <article class="card">
+            <h3>Personal agents</h3>
+            <p>An employee’s coding or desktop agent inherits their full permissions, under settings they chose. Company rules never come into it.</p>
+          </article>
+          <article class="card">
+            <h3>Background agents</h3>
+            <p>Scheduled and autonomous agents act on their own. Nobody checks each action as it happens.</p>
+          </article>
+          <article class="card">
+            <h3>Agents working together</h3>
+            <p>The person who asked gets lost at every handoff. And agents that each stay within their own permissions can, together, wipe a customer list.</p>
+          </article>
+        </div>
+        <div class="closing">
+          <p>So companies are stuck. AI teams want to deploy agents, but security and legal can’t answer three questions:</p>
+          <ol class="questions">
+            <li>Who asked?</li>
+            <li>Was it allowed?</li>
+            <li>Who is responsible if it goes wrong?</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="section section--rule" id="how" aria-labelledby="how-title">
+      <div class="container">
+        <p class="eyebrow">How it works</p>
+        <h2 class="section__title" id="how-title">One clear AI policy, checked on every action.</h2>
+        <ol class="steps">
+          <li class="step">
+            <span class="step__num" aria-hidden="true">01</span>
+            <h3>Write policy in plain English</h3>
+            <p>Each team sets the rules it knows best, or imports the policy document it already has. Kiok turns them into precise checks and combines them into one company-wide policy anyone can read.</p>
+          </li>
+          <li class="step">
+            <span class="step__num" aria-hidden="true">02</span>
+            <h3>Route agents through Kiok</h3>
+            <p>Kiok connects to the agents and tools you already use, and holds the connection between them. Every request carries the person who asked, from your company login.</p>
+          </li>
+          <li class="step">
+            <span class="step__num" aria-hidden="true">03</span>
+            <h3>Every action checked before it runs</h3>
+            <p>Kiok previews exactly what an action would change, then allows, blocks or pauses it for the right approver. Every decision is logged against the person who started it, even when agents hand work to each other.</p>
+          </li>
+        </ol>
+
+        <div class="layers">
+          <div class="layer">
+            <p class="mono-label">Layer 1</p>
+            <h3>The person’s own permissions</h3>
+            <p>An agent can only do what the person who asked can do. If Marcus can’t edit Dana’s deal, neither can his agent.</p>
+          </div>
+          <div class="layer">
+            <p class="mono-label">Layer 2</p>
+            <h3>Company-wide policy</h3>
+            <p>Even when the person is allowed, company rules apply on top: discount limits, approvals, and limits across all agents at once.</p>
+          </div>
+          <div class="layer layer--decision">
+            <p class="mono-label">Decision</p>
+            <ul class="pills" aria-label="Possible outcomes">
+              <li><span class="pill pill--allowed">Allowed</span></li>
+              <li><span class="pill pill--blocked">Blocked</span></li>
+              <li><span class="pill pill--paused">Paused</span></li>
+            </ul>
+            <p>Nobody approves their own request. Every outcome names the rule and the team behind it.</p>
+          </div>
+        </div>
+
+        <aside class="watch" aria-labelledby="watch-title">
+          <div>
+            <h3 id="watch-title">Start in Watch mode.</h3>
+            <p>See what your agents are doing, and what your policy would have stopped, before you enforce anything. No risk to your data, and a clear report to bring to legal.</p>
+          </div>
+          <a class="btn btn--dark" href="#access">Try it with your team</a>
+        </aside>
+      </div>
+    </section>
+
+    <!-- For teams -->
+    <section class="section section--rule" id="teams" aria-labelledby="teams-title">
+      <div class="container">
+        <p class="eyebrow">For teams</p>
+        <h2 class="section__title" id="teams-title">Faster rollouts. Provable control.</h2>
+        <div class="cards cards--4">
+          <article class="card">
+            <h3>Head of AI</h3>
+            <p>Roll out more agents, sooner, because they’re checked against your policy on every action.</p>
+          </article>
+          <article class="card">
+            <h3>Legal and compliance</h3>
+            <p>Turn your AI policy into rules that are enforced, and prove they’re followed with an audit trail you can export.</p>
+          </article>
+          <article class="card">
+            <h3>IT and security</h3>
+            <p>One place for every agent’s access, tied to your company login, with the real person on every action.</p>
+          </article>
+          <article class="card">
+            <h3>Managers</h3>
+            <p>Get only the requests that need you, with exactly what will change, and approve in one click.</p>
+          </article>
+        </div>
+        <p class="note">Starting with the CRM, where agent mistakes cost the most. More tools coming.</p>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta" id="access" aria-labelledby="cta-title">
+      <div class="container cta__grid">
+        <div>
+          <h2 id="cta-title">Bring your AI policy to every agent.</h2>
+          <p>As agents join the workforce, they’ll need the same accountability as employees. We’re working with a small group of early teams. Tell us where you’re deploying agents.</p>
+        </div>
+
+        <div class="cta__form-wrap">
+          <!-- Replace YOUR_FORM_ID with your Formspree form ID (formspree.io/f/xxxxxxxx). -->
+          <form class="form" id="access-form" action="https://formspree.io/f/YOUR_FORM_ID" method="POST" novalidate>
+            <div class="field">
+              <label for="email">Work email</label>
+              <input id="email" name="email" type="email" autocomplete="email" inputmode="email" required aria-describedby="form-status">
+            </div>
+            <div class="field">
+              <label for="agents">What agents are you using? <span class="optional">(optional)</span></label>
+              <input id="agents" name="agents" type="text" autocomplete="off">
+            </div>
+            <div class="hp" aria-hidden="true">
+              <label for="company-site">Leave this empty</label>
+              <input id="company-site" name="_gotcha" type="text" tabindex="-1" autocomplete="off">
+            </div>
+            <input type="hidden" name="_subject" value="Kiok early access request">
+            <button class="btn btn--light" type="submit">Request early access</button>
+            <p class="form__status" id="form-status" role="status" aria-live="polite"></p>
+          </form>
+          <div class="thanks" id="form-thanks" tabindex="-1" hidden>
+            <h3>Thanks. We’ll be in touch.</h3>
+            <p>We read every request and will reply to the address you gave us.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <img src="logo.svg" alt="Kiok" width="44" height="17">
+      <p>© 2026 Kiok · Authorization infrastructure for AI agents</p>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      var form = document.getElementById('access-form');
+      var status = document.getElementById('form-status');
+      var thanks = document.getElementById('form-thanks');
+      var email = document.getElementById('email');
+      var button = form.querySelector('button[type="submit"]');
+
+      function setStatus(msg, isError) {
+        status.textContent = msg;
+        status.classList.toggle('is-error', !!isError);
+        email.setAttribute('aria-invalid', isError ? 'true' : 'false');
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        if (!email.value.trim() || !email.checkValidity()) {
+          setStatus('Please enter a valid work email.', true);
+          email.focus();
+          return;
+        }
+        if (form.action.indexOf('YOUR_FORM_ID') !== -1) {
+          setStatus('This form isn’t connected yet. Add a Formspree form ID to index.html.', true);
+          return;
+        }
+
+        button.disabled = true;
+        setStatus('Sending…');
+
+        fetch(form.action, {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { Accept: 'application/json' }
+        }).then(function (res) {
+          if (!res.ok) throw new Error('Request failed');
+          form.hidden = true;
+          thanks.hidden = false;
+          thanks.focus();
+        }).catch(function () {
+          setStatus('Something went wrong. Please try again in a moment.', true);
+          button.disabled = false;
+        });
+      });
+    })();
+  </script>
+</body>
 </html>
